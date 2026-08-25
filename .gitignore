@@ -1,0 +1,41 @@
+# ===== IDE =====
+# Eclipse
+bin
+*.launch
+.settings
+.metadata
+.classpath
+.project
+
+# IntelliJ IDEA
+out
+*.ipr
+*.iws
+*.iml
+.idea
+
+# Visual Studio Code
+.vscode
+
+# ===== Gradle =====
+build
+.gradle
+
+# ===== 模组运行目录 =====
+run
+runs
+run-data
+logs
+crash-reports
+
+# ===== 本地 Maven 发布 =====
+repo
+
+# ===== 依赖模组 jar（不提交第三方模组 jar 到仓库）=====
+libs/*.jar
+!libs/.gitkeep
+
+# ===== 系统文件 =====
+.DS_Store
+Thumbs.db
+*.log
