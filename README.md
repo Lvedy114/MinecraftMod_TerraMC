@@ -2,7 +2,7 @@
 
 [![NeoForge](https://img.shields.io/badge/NeoForge-21.1.176-blue?style=flat-square)](https://neoforged.net/)
 [![Minecraft](https://img.shields.io/badge/Minecraft-1.21.1-green?style=flat-square)](https://www.minecraft.net/)
-[![License](https://img.shields.io/badge/License-MIT-yellow?style=flat-square)](LICENSE)
+[![License](https://img.shields.io/badge/License-GPL--3.0-blue?style=flat-square)](LICENSE)
 
 > 为汇流来世扩充更多饰品与装备。
 
