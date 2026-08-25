@@ -90,7 +90,7 @@ description='''${mod_description}'''
     modId="confluence"
     type="required"
     reason="TerraMC is an addon built on top of Confluence (Afterlife)."
-    versionRange="[1.0.0,)"
+    versionRange="[1.2.4,)"
     ordering="AFTER"
     side="BOTH"
 

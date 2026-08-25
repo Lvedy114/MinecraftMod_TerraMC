@@ -117,12 +117,10 @@ configurations {
 }
 
 dependencies {
-    // ===== 前置模组：汇流来世 (Confluence) =====
-    // 方式一：从本地 libs/ 目录引用 jar（推荐，无需公开 Maven 仓库）
-    //   将 confluence 的 jar 放入 libs/ 目录，命名为 confluence-<版本>.jar，然后：
-    // implementation "blank:confluence:1.0.0"
-    // 方式二：如果 confluence 已发布到某 Maven 仓库，请在上方 repositories 中添加仓库地址后：
-    // implementation "com.some.group:confluence:1.0.0"
+    // ===== 前置模组：汇流来世 (Confluence: Otherworld) 及其依赖 Curios API =====
+    // 从本地 libs/ 目录引用 jar，同时加入编译期与运行期 classpath
+    implementation files("libs/curios-neoforge-9.5.1+1.21.1.jar")
+    implementation files("libs/ConfluenceOtherworld-1.2.4-260226.jar")
 
     // ===== 可选联动模组示例 =====
     // JEI
