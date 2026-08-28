@@ -122,17 +122,18 @@ dependencies {
     implementation files("libs/curios-neoforge-9.5.1+1.21.1.jar")
     implementation files("libs/ConfluenceOtherworld-1.2.4-260226.jar")
 
+    // ===== 可选联动模组：群峦 (TerraFirmaCraft) 及其依赖 Patchouli =====
+    // compileOnly：编译期可见（用于引用锻造品质等 API），不随模组发布；
+    // localRuntime：开发运行时加载（仅当玩家安装群峦时才生效）
+    compileOnly files("libs/TerraFirmaCraft-NeoForge-1.21.1-4.2.8.jar")
+    localRuntime files("libs/TerraFirmaCraft-NeoForge-1.21.1-4.2.8.jar")
+    localRuntime files("libs/Patchouli-1.21.1-93-NEOFORGE.jar")
+
     // ===== 可选联动模组示例 =====
     // JEI
     // compileOnly "mezz.jei:jei-${mc_version}-common-api:${jei_version}"
     // compileOnly "mezz.jei:jei-${mc_version}-neoforge-api:${jei_version}"
     // localRuntime "mezz.jei:jei-${mc_version}-neoforge:${jei_version}"
-
-    // Example mod dependency using a mod jar from ./libs with a flat dir repository
-    // implementation "blank:coolmod-${mc_version}:${coolmod_version}"
-
-    // Example mod dependency using a file as dependency
-    // implementation files("libs/coolmod-${mc_version}-${coolmod_version}.jar")
 
     // For more info:
     // http://www.gradle.org/docs/current/userguide/artifact_dependencies_tutorial.html

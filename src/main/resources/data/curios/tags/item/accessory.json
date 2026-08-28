@@ -1,5 +1,15 @@
 {
   "values": [
-    "tm:tfc_primal_intuition"
+    "tm:tfc_primal_intuition",
+    "tm:tfc_practice_makes_perfect",
+    "tm:tfc_divine_skill",
+    "tm:tfc_nimble_footwork",
+    "tm:tfc_survivor",
+    "tm:tfc_early_preparation",
+    "tm:tfc_early_preparation_pro",
+    "tm:tfc_primal_strength",
+    "tm:tfc_thermal_core",
+    "tm:tfc_thermal_core_pro",
+    "tm:tfc_tempered"
   ]
 }

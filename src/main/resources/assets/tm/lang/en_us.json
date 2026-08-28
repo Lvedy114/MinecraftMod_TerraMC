@@ -1,4 +1,26 @@
 {
   "itemGroup.tm.main": "TerraMC",
-  "item.tm.tfc_primal_intuition": "[TFC] Primal Intuition"
+  "item.tm.tfc_primal_intuition": "[TFC] Primal Intuition",
+  "item.tm.tfc_practice_makes_perfect": "[TFC] Practice Makes Perfect",
+  "item.tm.tfc_divine_skill": "[TFC] Divine Skill",
+  "item.tm.tfc_nimble_footwork": "[TFC] Nimble Footwork",
+  "item.tm.tfc_survivor": "[TFC] Survivor",
+  "item.tm.tfc_early_preparation": "[TFC] Early Preparation",
+  "item.tm.tfc_early_preparation_pro": "[TFC] Early Preparation Pro",
+  "item.tm.tfc_primal_strength": "[TFC] Primal Strength",
+  "item.tm.tfc_thermal_core": "[TFC] Thermal Core",
+  "item.tm.tfc_thermal_core_pro": "[TFC] Thermal Core Pro",
+  "item.tm.tfc_tempered": "[TFC] Tempered",
+  "tooltip.tm.group_exclusive": "Only one accessory of this group can be equipped",
+  "tooltip.item.tm.tfc_primal_intuition.0": "Thrown TFC spears glow and have increased thrown base damage.",
+  "tooltip.item.tm.tfc_practice_makes_perfect.0": "Thrown TFC spears glow, and every 10 seconds, TFC spears within a certain range are recalled. Increases thrown base damage.",
+  "tooltip.item.tm.tfc_divine_skill.0": "Thrown TFC spears glow, and every 10 seconds, TFC spears within a certain range are recalled, damaging creatures along the recall path. Increases thrown base damage.",
+  "tooltip.item.tm.tfc_nimble_footwork.0": "Gain some movement speed for each piece of TFC armor worn.",
+  "tooltip.item.tm.tfc_survivor.0": "Gain some armor and armor toughness for each piece of TFC armor worn.",
+  "tooltip.item.tm.tfc_early_preparation.0": "TFC armor no longer loses durability.",
+  "tooltip.item.tm.tfc_early_preparation_pro.0": "TFC armor no longer loses durability,Gain some movement speed,armor and armor toughness for each piece of TFC armor worn",
+  "tooltip.item.tm.tfc_primal_strength.0": "",
+  "tooltip.item.tm.tfc_thermal_core.0": "When hurt, consumes charcoal or coal to grant Speed and restore health.",
+  "tooltip.item.tm.tfc_thermal_core_pro.0": "When hurt, consumes charcoal or coal to grant Speed and restore health.",
+  "tooltip.item.tm.tfc_tempered.0": "Can be forged on a TFC anvil. Higher forging quality grants more armor and armor toughness."
 }

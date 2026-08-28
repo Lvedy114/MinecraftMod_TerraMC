@@ -47,8 +47,8 @@ authors="${mod_authors}" #optional
 description='''${mod_description}'''
 
 # The [[mixins]] block allows you to declare your mixin config to FML so that it gets loaded.
-#[[mixins]]
-#config="${mod_id}.mixins.json"
+[[mixins]]
+config="${mod_id}.mixins.json"
 
 # The [[accessTransformers]] block allows you to declare where your AT file is.
 # If this block is omitted, a fallback attempt will be made to load an AT from META-INF/accesstransformer.cfg
@@ -85,12 +85,20 @@ description='''${mod_description}'''
     ordering="NONE"
     side="BOTH"
 
-# 前置模组：汇流来世 (Confluence)
+# 前置模组：汇流来世 (Confluence) —— 唯一强制依赖
 [[dependencies.${mod_id}]]
     modId="confluence"
     type="required"
     reason="TerraMC is an addon built on top of Confluence (Afterlife)."
     versionRange="[1.2.4,)"
+    ordering="AFTER"
+    side="BOTH"
+
+# 联动模组：群峦 (TerraFirmaCraft) —— 可选，仅当同时安装时才加载专属内容
+[[dependencies.${mod_id}]]
+    modId="tfc"
+    type="optional"
+    versionRange="[4.2.0,)"
     ordering="AFTER"
     side="BOTH"
 

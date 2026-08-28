@@ -1,51 +1,98 @@
 package com.terramc.tm.accessory;
 
+import com.google.common.collect.ArrayListMultimap;
+import com.google.common.collect.Multimap;
+import net.minecraft.ChatFormatting;
+import net.minecraft.core.Holder;
+import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceLocation;
+import net.minecraft.server.level.ServerPlayer;
+import net.minecraft.world.entity.ai.attributes.Attribute;
+import net.minecraft.world.entity.ai.attributes.AttributeModifier;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.TooltipFlag;
 import top.theillusivec4.curios.api.SlotContext;
 import top.theillusivec4.curios.api.type.capability.ICurioItem;
+
+import java.util.List;
+import java.util.function.Supplier;
 
 /**
  * 饰品物品基类。
  * <p>
- * 每个饰品都是一个物品（{@link Item}），通过 {@link #getAccessoryId()} 关联到
- * {@link AccessoryDefinition}（饰品定义），从而绑定到具体的 {@link AccessoryEffect}（效果）。
+ * 实现 Curios 的 {@link ICurioItem}。「组内互斥」和「不可重复装备」通过
+ * {@link AccessoryEvents} 监听 {@code CurioCanEquipEvent} 实现，而非覆写 {@code canEquip}。
  * <p>
- * 本类实现 Curios 的 {@link ICurioItem}，与「汇流来世(Confluence)」使用同一套 Curios API：
- * 饰品只能放入「配饰(accessory)」栏位，装备判定也统一走 Curios（见 {@link AccessoryManager}）。
+ * 支持「组(group)」：同一组的饰品互斥，只能装备其中一件。
  */
 public class AccessoryItem extends Item implements ICurioItem {
-    /** 汇流来世(Confluence)提供的饰品栏位 ID，所有 TerraMC 饰品均放入该栏位。 */
+    /** 「配饰」栏位 ID */
     public static final String ACCESSORY_SLOT = "accessory";
 
-    private final ResourceLocation accessoryId;
+    private final List<AccessoryEffect> effects;
+    private final ResourceLocation group;
+    private final Supplier<Multimap<Holder<Attribute>, AttributeModifier>> modifiersSupplier;
 
-    public AccessoryItem(ResourceLocation accessoryId, Item.Properties properties) {
+    public AccessoryItem(Item.Properties properties, AccessoryEffect... effects) {
+        this(properties, null, effects);
+    }
+
+    public AccessoryItem(Item.Properties properties, ResourceLocation group, AccessoryEffect... effects) {
+        this(properties, group, ArrayListMultimap::create, effects);
+    }
+
+    public AccessoryItem(Item.Properties properties, ResourceLocation group,
+                         Supplier<Multimap<Holder<Attribute>, AttributeModifier>> modifiersSupplier,
+                         AccessoryEffect... effects) {
         super(properties);
-        this.accessoryId = accessoryId;
+        this.group = group;
+        this.effects = List.of(effects);
+        this.modifiersSupplier = modifiersSupplier;
     }
 
-    /** 该饰品在饰品注册表中的唯一 ID，例如 {@code tm:tfc_primal_intuition}。 */
-    public ResourceLocation getAccessoryId() {
-        return accessoryId;
+    public List<AccessoryEffect> effects() {
+        return effects;
     }
 
-    /** 判断物品堆是否为指定 ID 的饰品。 */
-    public static boolean isAccessory(ItemStack stack, ResourceLocation accessoryId) {
-        return stack.getItem() instanceof AccessoryItem accessory
-                && accessory.getAccessoryId().equals(accessoryId);
+    public ResourceLocation group() {
+        return group;
     }
 
-    /** 仅允许放入「配饰(accessory)」栏位，其他 Curios 栏位（戒指、项链等）均不可装备。 */
+    /**
+     * 允许 Curios 的右键快捷装备继续执行；真正的同款/同组校验由
+     * {@code CurioCanEquipEvent} 在写入槽位前统一裁决。
+     */
     @Override
-    public boolean canEquip(SlotContext slotContext, ItemStack stack) {
-        return ACCESSORY_SLOT.equals(slotContext.identifier());
+    public boolean canEquipFromUse(SlotContext ctx, ItemStack stack) {
+        return true;
     }
 
-    /** 允许右键直接装备到「配饰(accessory)」栏位。 */
     @Override
-    public boolean canEquipFromUse(SlotContext slotContext, ItemStack stack) {
-        return canEquip(slotContext, stack);
+    public void onEquip(SlotContext ctx, ItemStack prevStack, ItemStack newStack) {
+        if (ctx.entity() instanceof ServerPlayer player) {
+            effects.forEach(e -> e.onEquip(player, newStack));
+        }
+    }
+
+    @Override
+    public void onUnequip(SlotContext ctx, ItemStack newStack, ItemStack prevStack) {
+        if (ctx.entity() instanceof ServerPlayer player) {
+            effects.forEach(e -> e.onUnequip(player));
+        }
+    }
+
+    @Override
+    public void appendHoverText(ItemStack stack, TooltipContext context, List<Component> tooltip, TooltipFlag flag) {
+        super.appendHoverText(stack, context, tooltip, flag);
+        tooltip.add(Component.translatable("tooltip." + stack.getDescriptionId() + ".0").withStyle(ChatFormatting.WHITE));
+        if (group != null) {
+            tooltip.add(Component.translatable("tooltip.tm.group_exclusive").withStyle(ChatFormatting.DARK_GRAY));
+        }
+    }
+
+    @Override
+    public Multimap<Holder<Attribute>, AttributeModifier> getAttributeModifiers(SlotContext slotContext, ResourceLocation id, ItemStack stack) {
+        return modifiersSupplier.get();
     }
 }

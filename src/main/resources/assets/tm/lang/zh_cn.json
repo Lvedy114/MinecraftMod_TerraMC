@@ -1,4 +1,26 @@
 {
   "itemGroup.tm.main": "让泰拉遍布我的世界",
-  "item.tm.tfc_primal_intuition": "[群峦]原始直觉"
+  "item.tm.tfc_primal_intuition": "[群峦]原始直觉",
+  "item.tm.tfc_practice_makes_perfect": "[群峦]熟能生巧",
+  "item.tm.tfc_divine_skill": "[群峦]神乎其技",
+  "item.tm.tfc_nimble_footwork": "[群峦]灵动步法",
+  "item.tm.tfc_survivor": "[群峦]生存者",
+  "item.tm.tfc_early_preparation": "[群峦]早有准备",
+  "item.tm.tfc_early_preparation_pro": "[群峦]万事俱备",
+  "item.tm.tfc_primal_strength": "[群峦]原始力量",
+  "item.tm.tfc_thermal_core": "[群峦]热核",
+  "item.tm.tfc_thermal_core_pro": "[群峦]过热核",
+  "item.tm.tfc_tempered": "[群峦]千锤百炼",
+  "tooltip.tm.group_exclusive": "同类饰品只能装备一件",
+  "tooltip.item.tm.tfc_primal_intuition.0": "投掷的群峦标枪会高亮显示，提升投掷基础伤害",
+  "tooltip.item.tm.tfc_practice_makes_perfect.0": "投掷的群峦标枪会高亮显示，每隔10s回收一定范围内的群峦标枪，提升投掷基础伤害",
+  "tooltip.item.tm.tfc_divine_skill.0": "投掷的群峦标枪会高亮显示，每隔10s回收一定范围内的群峦标枪，回收中的群峦标枪会对沿途生物造成伤害，提升投掷基础伤害",
+  "tooltip.item.tm.tfc_nimble_footwork.0": "每装备一件群峦护甲，提高一定移动速度",
+  "tooltip.item.tm.tfc_survivor.0": "每装备一件群峦护甲，获得一定护甲值与盔甲韧性",
+  "tooltip.item.tm.tfc_early_preparation.0": "身上的群峦护甲不再消耗耐久",
+  "tooltip.item.tm.tfc_early_preparation_pro.0": "身上的群峦护甲不再消耗耐久，每装备一件群峦护甲，提高一定移动速度并且获得一定护甲值与盔甲韧性",
+  "tooltip.item.tm.tfc_primal_strength.0": " ",
+  "tooltip.item.tm.tfc_thermal_core.0": "受到伤害时，消耗木炭或煤炭，获得迅捷并回复生命值",
+  "tooltip.item.tm.tfc_thermal_core_pro.0": "受到伤害时，消耗更多的木炭或煤炭，获得更强大迅捷并回复更多的生命值",
+  "tooltip.item.tm.tfc_tempered.0": "可在群峦砧上反复锻造，锻造品质越高，提供的护甲值与盔甲韧性越高"
 }

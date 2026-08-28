@@ -1,0 +1,17 @@
+{
+  "type": "tfc:anvil",
+  "ingredient": {
+    "item": "tm:tfc_tempered"
+  },
+  "result": {
+    "count": 1,
+    "id": "tm:tfc_tempered"
+  },
+  "rules": [
+    "punch_last",
+    "draw_not_last",
+    "bend_not_last"
+  ],
+  "tier": 1,
+  "apply_bonus": true
+}

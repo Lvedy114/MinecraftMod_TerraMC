@@ -1,6 +1,8 @@
 package com.terramc.tm;
 
 import com.mojang.logging.LogUtils;
+import com.terramc.tm.accessory.AccessoryEvents;
+import com.terramc.tm.compat.Integrations;
 import com.terramc.tm.compat.tfc.TfcAccessories;
 import com.terramc.tm.config.TerraConfig;
 import com.terramc.tm.init.ModBlocks;
@@ -22,6 +24,14 @@ public class TerraMC {
     public static final Logger LOGGER = LogUtils.getLogger();
 
     public TerraMC(IEventBus modEventBus, ModContainer modContainer) {
+        // 联动内容：仅当对应联动模组已安装时才注册（见 Integrations）
+        if (Integrations.isTfc()) {
+            TfcAccessories.init();
+        }
+
+        // Curios 装备校验和饰品效果均发布在 NeoForge 游戏事件总线上
+        AccessoryEvents.register();
+
         // 注册各类 DeferredRegister 到模组事件总线
         ModItems.ITEMS.register(modEventBus);
         ModBlocks.BLOCKS.register(modEventBus);
@@ -29,9 +39,6 @@ public class TerraMC {
 
         // 注册配置文件
         modContainer.registerConfig(ModConfig.Type.COMMON, TerraConfig.SPEC);
-
-        // 初始化各联动模组的饰品（构建饰品定义表）
-        TfcAccessories.register();
     }
 
     // 便捷方法：生成命名空间为 "tm" 的 ResourceLocation
