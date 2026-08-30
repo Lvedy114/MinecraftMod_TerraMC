@@ -2,11 +2,11 @@ package com.terramc.tm.compat.tfc.effects;
 
 import com.terramc.tm.TerraMC;
 import com.terramc.tm.accessory.AccessoryEffect;
-import com.terramc.tm.compat.tfc.config.TfcTemperedConfig;
+import com.terramc.tm.config.JsonConfig;
 import net.dries007.tfc.common.component.forge.ForgingBonus;
 import net.dries007.tfc.common.component.forge.ForgingBonusComponent;
 import net.minecraft.resources.ResourceLocation;
-import net.minecraft.server.level.ServerPlayer;
+import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.ai.attributes.AttributeModifier;
 import net.minecraft.world.entity.ai.attributes.Attributes;
 import net.minecraft.world.item.ItemStack;
@@ -23,11 +23,13 @@ import top.theillusivec4.curios.common.CuriosRegistry;
 public class Tempered extends AccessoryEffect {
     private static final ResourceLocation ARMOR_ID = TerraMC.id("tfc_tempered_armor");
     private static final ResourceLocation TOUGHNESS_ID = TerraMC.id("tfc_tempered_toughness");
+    private static final String ACCESSORIES = "tfc/accessories";
+    private static final String KEY = "tfc_tempered";
     private static final String ACCESSORY_SLOT = "accessory";
 
     @Override
-    public void onEquip(ServerPlayer player, ItemStack stack) {
-        if (!TfcTemperedConfig.enabled.get()) {
+    public void onEquip(LivingEntity entity, ItemStack stack) {
+        if (!JsonConfig.getBoolean(ACCESSORIES, KEY, "enabled", true)) {
             return;
         }
         ForgingBonus bonus = ForgingBonusComponent.get(stack);
@@ -39,10 +41,12 @@ public class Tempered extends AccessoryEffect {
             armor = 0;
             toughness = 0;
         } else {
-            armor = Math.max(TfcTemperedConfig.minArmor.get(),
-                    TfcTemperedConfig.perfectArmor.get() - downgrade * TfcTemperedConfig.armorStep.get());
-            toughness = Math.max(TfcTemperedConfig.minToughness.get(),
-                    TfcTemperedConfig.perfectToughness.get() - downgrade * TfcTemperedConfig.toughnessStep.get());
+            armor = Math.max(JsonConfig.getDouble(ACCESSORIES, KEY, "minArmor", 1.0),
+                    JsonConfig.getDouble(ACCESSORIES, KEY, "perfectArmor", 10.0)
+                            - downgrade * JsonConfig.getDouble(ACCESSORIES, KEY, "armorStep", 3.0));
+            toughness = Math.max(JsonConfig.getDouble(ACCESSORIES, KEY, "minToughness", 0.5),
+                    JsonConfig.getDouble(ACCESSORIES, KEY, "perfectToughness", 5.0)
+                            - downgrade * JsonConfig.getDouble(ACCESSORIES, KEY, "toughnessStep", 2.0));
         }
 
         CurioAttributeModifiers.Builder builder = CurioAttributeModifiers.builder();

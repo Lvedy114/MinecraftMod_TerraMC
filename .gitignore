@@ -30,6 +30,7 @@ crash-reports
 
 # ===== 本地 Maven 发布 =====
 repo
+文档
 
 # ===== 依赖模组 jar（不提交第三方模组 jar 到仓库）=====
 libs/*.jar
