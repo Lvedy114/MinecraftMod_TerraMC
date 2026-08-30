@@ -4,51 +4,68 @@ import com.terramc.tm.accessory.AccessoryEffect;
 import com.terramc.tm.compat.tfc.config.TfcConfig;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.entity.LivingEntity;
+import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.projectile.AbstractArrow;
 import net.minecraft.world.phys.Vec3;
-import net.neoforged.neoforge.common.ModConfigSpec;
+import net.minecraft.world.item.ItemStack;
+import top.theillusivec4.curios.api.SlotContext;
 
 import java.util.List;
+import java.util.Map;
+import java.util.UUID;
+import java.util.concurrent.ConcurrentHashMap;
+import java.util.function.Supplier;
 
 /**
  * 标枪周期性回收效果：每隔固定时间，将玩家附近大范围内的所有标枪强制召回，
  * 并沿路径对生物造成伤害（可配置）。
+ * <p>
+ * 冷却按玩家 UUID 单独记录（以游戏刻为基准），多名玩家佩戴互不影响。
+ * 效果实例在物品注册时只创建一次、被所有佩戴者共享，
+ * 因此计时状态绝不能放在实例字段里（否则佩戴者越多冷却越快）。
  */
 public class SpearRecallEffect extends AccessoryEffect {
     /** 召回飞行速度（格/刻）。 */
     private static final double RECALL_SPEED = 1.5;
 
-    private final ModConfigSpec.BooleanValue enabled;
-    private final ModConfigSpec.DoubleValue recallRange;
-    private final ModConfigSpec.DoubleValue pathDamage;
+    private final Supplier<Boolean> enabled;
+    private final Supplier<Double> recallRange;
+    private final Supplier<Double> pathDamage;
+    private final Supplier<Integer> recallCooldownTicks;
 
-    // 计时器，记录距离下次回收的剩余刻数
-    private int cooldown = 0;
+    /** 每个玩家上次触发回收的游戏刻（UUID -> 游戏刻）。 */
+    private final Map<UUID, Long> lastRecallAt = new ConcurrentHashMap<>();
 
-    /** 不带路径伤害的回收效果（仅用于兼容旧构造，但建议使用完整构造）。 */
-    public SpearRecallEffect(ModConfigSpec.BooleanValue enabled, ModConfigSpec.DoubleValue recallRange) {
-        this(enabled, recallRange, null);
+    /** 不带路径伤害的回收效果。 */
+    public SpearRecallEffect(Supplier<Boolean> enabled, Supplier<Double> recallRange,
+                             Supplier<Integer> recallCooldownTicks) {
+        this(enabled, recallRange, recallCooldownTicks, null);
     }
 
-    public SpearRecallEffect(ModConfigSpec.BooleanValue enabled, ModConfigSpec.DoubleValue recallRange,
-                             ModConfigSpec.DoubleValue pathDamage) {
+    public SpearRecallEffect(Supplier<Boolean> enabled, Supplier<Double> recallRange,
+                             Supplier<Integer> recallCooldownTicks, Supplier<Double> pathDamage) {
         this.enabled = enabled;
         this.recallRange = recallRange;
+        this.recallCooldownTicks = recallCooldownTicks;
         this.pathDamage = pathDamage;
     }
 
     @Override
-    public void onPlayerTick(ServerPlayer player) {
+    public void onCurioTick(SlotContext slotContext, LivingEntity entity, ItemStack stack) {
+        // 标枪系效果仅限玩家使用
+        if (!(entity instanceof ServerPlayer player)) {
+            return;
+        }
         if (!enabled.get()) {
             return;
         }
 
-        // 间隔控制：未到时间则跳过
-        if (--cooldown > 0) {
+        // 间隔控制：按玩家单独计时，未到时间则跳过
+        long now = player.level().getGameTime();
+        Long last = lastRecallAt.get(player.getUUID());
+        if (last != null && now - last < recallCooldownTicks.get()) {
             return;
         }
-        // 重置冷却（如果配置未提供，默认 20 刻 = 1 秒）
-        cooldown = 200;
 
         double range = recallRange.get();
         double pathDmg = pathDamage != null ? pathDamage.get() : 0.0;
@@ -59,6 +76,7 @@ public class SpearRecallEffect extends AccessoryEffect {
                 player.getBoundingBox().inflate(range),
                 a -> a.getOwner() == player && TfcConfig.isSpear(a) && !a.isRemoved());
 
+        boolean recalled = false;
         for (AbstractArrow javelin : javelins) {
             Vec3 toPlayer = player.getEyePosition().subtract(javelin.position());
             double dist = toPlayer.length();
@@ -71,11 +89,17 @@ public class SpearRecallEffect extends AccessoryEffect {
             // 强制召回：开启无物理，设置速度指向玩家
             javelin.setNoPhysics(true);
             javelin.setDeltaMovement(toPlayer.normalize().scale(RECALL_SPEED));
+            recalled = true;
 
             // 如果配置了路径伤害，则对召回路径上的生物造成伤害
             if (pathDmg > 0) {
                 damageAlongPath(player, javelin, (float) pathDmg);
             }
+        }
+
+        // 只有真正触发了召回才进入冷却，没有标枪可召回时下一刻继续尝试
+        if (recalled) {
+            lastRecallAt.put(player.getUUID(), now);
         }
     }
 

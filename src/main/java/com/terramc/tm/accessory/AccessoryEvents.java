@@ -2,6 +2,7 @@ package com.terramc.tm.accessory;
 
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.entity.Entity;
+import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.projectile.Projectile;
 import net.minecraft.world.item.ItemStack;
 import net.neoforged.bus.api.EventPriority;
@@ -11,7 +12,6 @@ import net.neoforged.neoforge.event.entity.EntityJoinLevelEvent;
 import net.neoforged.neoforge.event.entity.living.ArmorHurtEvent;
 import net.neoforged.neoforge.event.entity.living.LivingDamageEvent;
 import net.neoforged.neoforge.event.entity.living.LivingIncomingDamageEvent;
-import net.neoforged.neoforge.event.tick.PlayerTickEvent;
 import top.theillusivec4.curios.api.CuriosApi;
 import top.theillusivec4.curios.api.SlotResult;
 import top.theillusivec4.curios.api.event.CurioCanEquipEvent;
@@ -41,7 +41,6 @@ public final class AccessoryEvents {
         NeoForge.EVENT_BUS.addListener(EventPriority.LOWEST, AccessoryEvents::onCurioCanEquip);
         NeoForge.EVENT_BUS.addListener(AccessoryEvents::onLivingHurt);
         NeoForge.EVENT_BUS.addListener(AccessoryEvents::onEntityJoinLevel);
-        NeoForge.EVENT_BUS.addListener(AccessoryEvents::onPlayerTick);
         NeoForge.EVENT_BUS.addListener(AccessoryEvents::onDamaged);
         NeoForge.EVENT_BUS.addListener(AccessoryEvents::onArmorHurt);
     }
@@ -102,34 +101,30 @@ public final class AccessoryEvents {
         forEachEquipped(player, effect -> effect.onProjectileSpawn(event, player, projectile));
     }
 
-    private static void onPlayerTick(PlayerTickEvent.Post event) {
-        if (!(event.getEntity() instanceof ServerPlayer player)) {
-            return;
-        }
-        forEachEquipped(player, effect -> effect.onPlayerTick(player));
-    }
-
     private static void onDamaged(LivingDamageEvent.Post event) {
-        if (!(event.getEntity() instanceof ServerPlayer player)) {
-            return;
+        if (isServerSide(event.getEntity())) {
+            forEachEquipped(event.getEntity(), effect -> effect.onDamaged(event, event.getEntity()));
         }
-        forEachEquipped(player, effect -> effect.onDamaged(event, player));
     }
 
     private static void onArmorHurt(ArmorHurtEvent event) {
-        if (!(event.getEntity() instanceof ServerPlayer player)) {
-            return;
+        if (isServerSide(event.getEntity())) {
+            forEachEquipped(event.getEntity(), effect -> effect.onArmorHurt(event, event.getEntity()));
         }
-        forEachEquipped(player, effect -> effect.onArmorHurt(event, player));
     }
 
-    private static void forEachEquipped(ServerPlayer player, Consumer<AccessoryEffect> action) {
-        CuriosApi.getCuriosInventory(player).ifPresent(handler -> {
+    private static void forEachEquipped(LivingEntity entity, Consumer<AccessoryEffect> action) {
+        CuriosApi.getCuriosInventory(entity).ifPresent(handler -> {
             for (SlotResult slot : handler.findCurios(AccessoryItem.ACCESSORY_SLOT)) {
                 if (slot.stack().getItem() instanceof AccessoryItem accessory) {
                     accessory.effects().forEach(action);
                 }
             }
         });
+    }
+
+    /** 伤害/护甲类游戏事件双端都会触发，效果只在服务端结算。 */
+    private static boolean isServerSide(Entity entity) {
+        return entity instanceof LivingEntity living && !living.level().isClientSide;
     }
 }

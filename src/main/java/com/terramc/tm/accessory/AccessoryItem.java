@@ -6,7 +6,7 @@ import net.minecraft.ChatFormatting;
 import net.minecraft.core.Holder;
 import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceLocation;
-import net.minecraft.server.level.ServerPlayer;
+import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.ai.attributes.Attribute;
 import net.minecraft.world.entity.ai.attributes.AttributeModifier;
 import net.minecraft.world.item.Item;
@@ -70,16 +70,35 @@ public class AccessoryItem extends Item implements ICurioItem {
 
     @Override
     public void onEquip(SlotContext ctx, ItemStack prevStack, ItemStack newStack) {
-        if (ctx.entity() instanceof ServerPlayer player) {
-            effects.forEach(e -> e.onEquip(player, newStack));
+        if (isServerSideWearer(ctx)) {
+            effects.forEach(e -> e.onEquip(ctx.entity(), newStack));
         }
     }
 
     @Override
     public void onUnequip(SlotContext ctx, ItemStack newStack, ItemStack prevStack) {
-        if (ctx.entity() instanceof ServerPlayer player) {
-            effects.forEach(e -> e.onUnequip(player));
+        if (isServerSideWearer(ctx)) {
+            effects.forEach(e -> e.onUnequip(ctx.entity()));
         }
+    }
+
+    /**
+     * Curios 对每个已装备的饰品双端调用 {@code curioTick}；这里收口为
+     * 「仅服务端、仅真实配饰槽位」再分发给效果（美容槽位与其他槽位类型不触发效果）。
+     */
+    @Override
+    public void curioTick(SlotContext ctx, ItemStack stack) {
+        if (ctx.cosmetic() || !ACCESSORY_SLOT.equals(ctx.identifier())) {
+            return;
+        }
+        if (isServerSideWearer(ctx)) {
+            effects.forEach(e -> e.onCurioTick(ctx, ctx.entity(), stack));
+        }
+    }
+
+    /** Curios 支持任意生物佩戴饰品；效果只在服务端触发。 */
+    private static boolean isServerSideWearer(SlotContext ctx) {
+        return ctx.entity() instanceof LivingEntity entity && !entity.level().isClientSide;
     }
 
     @Override

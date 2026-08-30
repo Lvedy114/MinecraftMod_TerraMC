@@ -1,0 +1,68 @@
+{
+  "tfc_primal_intuition": {
+    "enabled": true,
+    "thrownDamageBonus": 4.0,
+    "glowEnabled": true
+  },
+  "tfc_practice_makes_perfect": {
+    "enabled": true,
+    "thrownDamageBonus": 4.0,
+    "glowEnabled": true,
+    "recallRange": 15.0,
+    "recallCooldownTicks": 200
+  },
+  "tfc_divine_skill": {
+    "enabled": true,
+    "thrownDamageBonus": 5.0,
+    "glowEnabled": true,
+    "recallRange": 25.0,
+    "recallPathDamage": 1.0,
+    "recallCooldownTicks": 200
+  },
+  "tfc_nimble_footwork": {
+    "enabled": true,
+    "speedPerArmor": 0.015
+  },
+  "tfc_survivor": {
+    "enabled": true,
+    "armorPerArmor": 0.5,
+    "toughnessPerArmor": 0.25
+  },
+  "tfc_early_preparation": {
+    "enabled": true
+  },
+  "tfc_early_preparation_pro": {
+    "enabled": true,
+    "speedPerArmor": 0.015,
+    "armorPerArmor": 0.5,
+    "toughnessPerArmor": 0.25
+  },
+  "tfc_primal_strength": {
+    "enabled": true,
+    "attackDamage": 4.0,
+    "attackSpeedMultiplier": -0.3
+  },
+  "tfc_thermal_core": {
+    "enabled": true,
+    "requiredFuel": 5,
+    "healAmount": 4.0,
+    "speedTicks": 100,
+    "cooldownTicks": 200
+  },
+  "tfc_thermal_core_pro": {
+    "enabled": true,
+    "requiredFuel": 8,
+    "healAmount": 8.0,
+    "speedTicks": 200,
+    "cooldownTicks": 160
+  },
+  "tfc_tempered": {
+    "enabled": true,
+    "perfectArmor": 10.0,
+    "perfectToughness": 5.0,
+    "armorStep": 3.0,
+    "toughnessStep": 2.0,
+    "minArmor": 1.0,
+    "minToughness": 0.5
+  }
+}
