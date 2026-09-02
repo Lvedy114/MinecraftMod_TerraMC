@@ -33,8 +33,7 @@ repo
 文档
 
 # ===== 依赖模组 jar（不提交第三方模组 jar 到仓库）=====
-libs/*.jar
-!libs/.gitkeep
+libs
 
 # ===== 系统文件 =====
 .DS_Store
