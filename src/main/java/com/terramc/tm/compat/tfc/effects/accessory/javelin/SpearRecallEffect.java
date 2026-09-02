@@ -1,9 +1,8 @@
-package com.terramc.tm.compat.tfc.effects.javelin;
+package com.terramc.tm.compat.tfc.effects.accessory.javelin;
 
 import com.terramc.tm.accessory.AccessoryEffect;
 import com.terramc.tm.compat.tfc.config.TfcConfig;
 import net.minecraft.server.level.ServerPlayer;
-import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.projectile.AbstractArrow;
 import net.minecraft.world.phys.Vec3;

@@ -116,11 +116,28 @@ configurations {
     runtimeClasspath.extendsFrom localRuntime
 }
 
+// flatDir 本地仓库：以「group:name:version」坐标引用 libs/ 下的 jar（取代 files() 写法）。
+// 坐标式依赖才能让 IDE 自动挂接同目录同名带 -sources 后缀的源码包，实现 Ctrl+点击 源码跳转。
+repositories {
+    flatDir {
+        dirs 'libs', 'libs/jarjar-deps'
+    }
+}
+
 dependencies {
     // ===== 前置模组：汇流来世 (Confluence: Otherworld) 及其依赖 Curios API =====
-    // 从本地 libs/ 目录引用 jar，同时加入编译期与运行期 classpath
+    // 二进制：libs/ConfluenceOtherworld-1.2.4-260226.jar；源码包：同目录 -sources.jar（官方仓库 neoforge/1.21.1 分支）
+    implementation "blank:ConfluenceOtherworld:1.2.4-260226"
     implementation files("libs/curios-neoforge-9.5.1+1.21.1.jar")
-    implementation files("libs/ConfluenceOtherworld-1.2.4-260226.jar")
+
+    // ===== 汇流来世的 jar-in-jar 内嵌子模块（jar 解自其 META-INF/jarjar/，-sources.jar 来自官方子模块仓库） =====
+    // 运行期由汇流自身的 JIJ 机制提供，因此只用 compileOnly；
+    // 切勿改为 implementation/localRuntime，否则开发环境这些模组会被加载两次
+    compileOnly "blank:org.confluence.lib.confluence_magic_lib:0.0.8"
+    compileOnly "blank:org.confluence.terra_entity:1.2.1"
+    compileOnly "blank:org.confluence.terra_guns:1.21.1-1.0"
+    compileOnly "blank:org.confluence.terra_curio:1.2.0"
+    compileOnly "blank:geckolib-neoforge:1.21.1-4.8.2"
 
     // ===== 可选联动模组：群峦 (TerraFirmaCraft) 及其依赖 Patchouli =====
     // compileOnly：编译期可见（用于引用锻造品质等 API），不随模组发布；

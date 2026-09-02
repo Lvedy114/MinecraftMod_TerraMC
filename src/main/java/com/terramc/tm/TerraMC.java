@@ -4,6 +4,8 @@ import com.mojang.logging.LogUtils;
 import com.terramc.tm.accessory.AccessoryEvents;
 import com.terramc.tm.compat.Integrations;
 import com.terramc.tm.compat.tfc.TfcAccessories;
+import com.terramc.tm.compat.tfc.TfcEntities;
+import com.terramc.tm.compat.tfc.TfcWeapon;
 import com.terramc.tm.config.JsonConfig;
 import com.terramc.tm.config.TerraConfig;
 import com.terramc.tm.init.ModBlocks;
@@ -28,6 +30,8 @@ public class TerraMC {
         // 联动内容：仅当对应联动模组已安装时才注册（见 Integrations）
         if (Integrations.isTfc()) {
             TfcAccessories.init();
+            TfcWeapon.init();
+            TfcEntities.init();
         }
 
         // Curios 装备校验和饰品效果均发布在 NeoForge 游戏事件总线上
@@ -38,6 +42,9 @@ public class TerraMC {
 
         // 注册各类 DeferredRegister 到模组事件总线
         ModItems.ITEMS.register(modEventBus);
+        if (Integrations.isTfc()) {
+            TfcEntities.ENTITIES.register(modEventBus);
+        }
         ModBlocks.BLOCKS.register(modEventBus);
         ModCreativeTabs.TABS.register(modEventBus);
 

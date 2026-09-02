@@ -1,4 +1,4 @@
-package com.terramc.tm.compat.tfc.effects.javelin;
+package com.terramc.tm.compat.tfc.effects.accessory.javelin;
 
 import com.terramc.tm.accessory.AccessoryEffect;
 import com.terramc.tm.compat.tfc.config.TfcConfig;

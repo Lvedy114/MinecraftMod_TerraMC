@@ -1,4 +1,4 @@
-package com.terramc.tm.compat.tfc.effects;
+package com.terramc.tm.compat.tfc.effects.accessory;
 
 import com.terramc.tm.TerraMC;
 import com.terramc.tm.accessory.AccessoryEffect;

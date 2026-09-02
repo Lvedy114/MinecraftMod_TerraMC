@@ -22,5 +22,9 @@
   "tooltip.item.tm.tfc_primal_strength.0": "",
   "tooltip.item.tm.tfc_thermal_core.0": "When hurt, consumes charcoal or coal to grant Speed and restore health.",
   "tooltip.item.tm.tfc_thermal_core_pro.0": "When hurt, consumes charcoal or coal to grant Speed and restore health.",
-  "tooltip.item.tm.tfc_tempered.0": "Can be forged on a TFC anvil. Higher forging quality grants more armor and armor toughness."
+  "tooltip.item.tm.tfc_tempered.0": "Can be forged on a TFC anvil. Higher forging quality grants more armor and armor toughness.",
+  "item.tm.tfc_starfall_sword": "[TFC] Starfall Sword",
+  "tooltip.item.tm.tfc_starfall_sword.0": "Calls down a falling star when swung; hits deal bonus magic damage and make targets glow.",
+  "item.tm.tfc_stone_club": "[TFC] Stone Club",
+  "tooltip.item.tm.tfc_stone_club.0": "Swings launch a small, rolling cobblestone that flies without gravity and damages creatures along its path."
 }

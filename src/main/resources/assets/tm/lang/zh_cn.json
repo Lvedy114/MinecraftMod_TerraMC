@@ -22,5 +22,9 @@
   "tooltip.item.tm.tfc_primal_strength.0": " ",
   "tooltip.item.tm.tfc_thermal_core.0": "受到伤害时，消耗木炭或煤炭，获得迅捷并回复生命值",
   "tooltip.item.tm.tfc_thermal_core_pro.0": "热核的升级版，消耗更多的燃料，获得更强大的力量",
-  "tooltip.item.tm.tfc_tempered.0": "可在群峦砧上进行反复锻造。会根据锻造品质来决定其提供的护甲值与盔甲韧性"
+  "tooltip.item.tm.tfc_tempered.0": "可在群峦砧上进行反复锻造。会根据锻造品质来决定其提供的护甲值与盔甲韧性",
+  "item.tm.tfc_starfall_sword": "[群峦]星陨剑",
+  "tooltip.item.tm.tfc_starfall_sword.0": "挥舞时召唤落星，命中目标会造成额外魔法伤害并使其发光",
+  "item.tm.tfc_stone_club": "[群峦]石头做的棒子",
+  "tooltip.item.tm.tfc_stone_club.0": "每次挥舞都会抛射一颗不断翻滚的无重力小圆石，沿途伤害生物"
 }
