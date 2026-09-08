@@ -1,4 +1,4 @@
-package com.terramc.tm.compat.tfc.effects.accessory;
+package com.terramc.tm.compat.tfc.effect;
 
 import com.terramc.tm.accessory.AccessoryEffect;
 import net.minecraft.world.entity.EquipmentSlot;

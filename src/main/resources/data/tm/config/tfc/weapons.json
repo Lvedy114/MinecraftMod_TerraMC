@@ -1,19 +1,11 @@
 {
   "tfc_starfall_sword": {
-    "enabled": true,
-    "attackDamage": 2.0,
-    "attackSpeed": 3.0,
     "sweepRatio": 0.8,
     "bonusDamage": 3.0,
     "glowEnabled": true,
     "glowTicks": 100
   },
-  "tfc_stone_club": {
-    "enabled": true,
-    "attackDamage": 5.0,
-    "attackSpeed": 1.6,
-    "projectileSpeed": 1.25,
-    "projectileDamage": 6.0,
-    "projectileLifetime": 60
+  "tfc_radiant_star_sling": {
+    "projectileLifetime": 120
   }
 }

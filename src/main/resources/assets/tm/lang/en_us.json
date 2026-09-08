@@ -26,5 +26,7 @@
   "item.tm.tfc_starfall_sword": "[TFC] Starfall Sword",
   "tooltip.item.tm.tfc_starfall_sword.0": "Calls down a falling star when swung; hits deal bonus magic damage and make targets glow.",
   "item.tm.tfc_stone_club": "[TFC] Stone Club",
-  "tooltip.item.tm.tfc_stone_club.0": "Swings launch a small, rolling cobblestone that flies without gravity and damages creatures along its path."
+  "tooltip.item.tm.tfc_stone_club.0": "Swings launch a small, rolling cobblestone that flies without gravity and damages creatures along its path.",
+  "item.tm.tfc_radiant_star_sling": "[TFC] Radiant Star Sling",
+  "tooltip.item.tm.tfc_radiant_star_sling.0": "For some reason, these stars are just perfect for throwing."
 }

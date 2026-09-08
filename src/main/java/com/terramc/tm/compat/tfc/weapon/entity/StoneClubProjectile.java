@@ -2,11 +2,9 @@ package com.terramc.tm.compat.tfc.weapon.entity;
 
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EntityType;
-import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.level.Level;
-import net.minecraft.world.phys.AABB;
-import net.minecraft.world.phys.EntityHitResult;
 import net.minecraft.world.phys.Vec3;
+import org.confluence.mod.common.component.SwordProjectileComponent;
 import org.confluence.mod.common.entity.projectile.sword.SwordProjectile;
 
 import java.util.HashSet;
@@ -15,90 +13,39 @@ import java.util.Set;
 /**
  * 石头棒子的翻滚弹幕。
  * <p>
- * 发射时把初始速度方向写入 SwordProjectile 自带的 DATA_DIRECTION 同步字段。
- * 该方向只用于建立固定的渲染局部坐标系；弹幕飞行期间仅累加局部 Z 轴滚转角。
+ * 仿照汇流来世 {@code ForwardSwordProjectile}：伤害、速度、冷却、重力、寿命等全部
+ * 来自 {@code SwordProjectileComponent}（即 tooltip 上的剑气三属性），
+ * 由 {@code BaseSwordItem#genProjectile} 统一注入；本类只负责直线位移与穿透去重。
  */
 public class StoneClubProjectile extends SwordProjectile {
-    private static final int MAX_LIFETIME = 50;
-    private static final float DAMAGE = 2.0F;
 
+    /** 穿透弹幕：每个目标只结算一次伤害。 */
     private final Set<Integer> hitEntities = new HashSet<>();
 
     public StoneClubProjectile(EntityType<? extends StoneClubProjectile> type, Level level) {
         super(type, level);
-        lifetime = MAX_LIFETIME;
+        // 翻滚石头可穿透多个目标；基类 doHurt 中 --hitCount <= 0 才丢弃
         hitCount = Integer.MAX_VALUE;
-        setNoGravity(true);
-    }
-
-    public void launch(LivingEntity owner, Vec3 position, Vec3 velocity) {
-        Vec3 initialDirection = velocity.normalize();
-
-        setOwner(owner);
-        setPos(position);
-        setDeltaMovement(velocity);
-        baseAttackDamage = DAMAGE;
-        attackDamageFactor = 1.0F;
-
-        // 复用汇流来世 SwordProjectile 的同步方向字段，避免另存 X/Y 欧拉角。
-        direction = initialDirection;
-        entityData.set(DATA_DIRECTION, initialDirection.toVector3f());
     }
 
     @Override
     public void tick() {
-        if (!level().isClientSide && tickCount >= MAX_LIFETIME) {
-            discard();
-            return;
-        }
-
-        Vec3 movement = getDeltaMovement();
-        Vec3 end = position().add(movement);
-        AABB scan = getBoundingBox().expandTowards(movement).inflate(0.18D);
-
-        if (!level().isClientSide) {
-            for (Entity entity : level().getEntities(this, scan,
-                    candidate -> candidate instanceof LivingEntity living
-                            && living.isAlive()
-                            && candidate != getOwner()
-                            && !hitEntities.contains(candidate.getId()))) {
-                if (entity instanceof LivingEntity living) {
-                    hitEntities.add(entity.getId());
-                    doHurt(living);
-                }
-            }
-        }
-
-        setPos(end);
-        // 本类不调用 SwordProjectile.tick()，因此客户端与服务端都要自行推进视觉年龄。
-        tickCount++;
+        // 基类处理寿命（existTicks/lifetime）、重力与 AABB 碰撞攻击
+        // （伤害 = damageFactor × 攻击者攻击力属性，由 genProjectile 注入）
+        super.tick();
+        Vec3 motion = getDeltaMovement();
+        setPos(getX() + motion.x, getY() + motion.y, getZ() + motion.z);
     }
 
     @Override
-    protected boolean canHitEntity(Entity target) {
-        return target instanceof LivingEntity living
-                && living.isAlive()
-                && target != getOwner()
-                && !hitEntities.contains(target.getId());
-    }
-
-    @Override
-    protected void onHitEntity(EntityHitResult result) {
-        if (!level().isClientSide
-                && result.getEntity() instanceof LivingEntity living
-                && canHitEntity(living)) {
-            hitEntities.add(living.getId());
-            doHurt(living);
+    protected boolean doHurt(Entity target) {
+        // 穿透去重必须放在 doHurt 而不是 canHitEntity：
+        // 原版 AbstractHurtingProjectile.tick 的射线检测也会调用 canHitEntity，
+        // 若在 canHitEntity 里做去重副作用，目标会被提前记入已命中集合，
+        // 随后基类 doCollisionAttack 的过滤永远失败，弹幕将不造成任何伤害。
+        if (!hitEntities.add(target.getId())) {
+            return false;
         }
-    }
-
-    @Override
-    protected double getDefaultGravity() {
-        return 0.0D;
-    }
-
-    /** 发射时固定并同步的局部前向轴。 */
-    public Vec3 getInitialDirection() {
-        return direction.lengthSqr() > 1.0E-7D ? direction.normalize() : getDeltaMovement().normalize();
+        return super.doHurt(target);
     }
 }

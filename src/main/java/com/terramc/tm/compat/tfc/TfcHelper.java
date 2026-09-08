@@ -1,4 +1,4 @@
-package com.terramc.tm.compat.tfc.config;
+package com.terramc.tm.compat.tfc;
 
 import com.terramc.tm.config.JsonConfig;
 import com.terramc.tm.util.ProjectileUtil;
@@ -11,15 +11,15 @@ import net.minecraft.world.item.ItemStack;
 import java.util.List;
 
 /**
- * 群峦(TFC)联动通用配置读取。
+ * 群峦(TFC)联动通用判定与配置读取工具。
  * <p>
- * 数值存于 {@code data/tm/config/tfc/general.json}（key: {@code spear}），
+ * 通用数值存于 {@code data/tm/config/tfc/general.json}（key: {@code spear}），
  * 由 {@link JsonConfig} 统一加载，缺失时回退代码默认值。
  */
-public final class TfcConfig {
+public final class TfcHelper {
     private static final String GENERAL = "tfc/general";
 
-    private TfcConfig() {
+    private TfcHelper() {
     }
 
     /** 判断某投掷物是否为群峦「矛类投掷物」（标枪等）。 */

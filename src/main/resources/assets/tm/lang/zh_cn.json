@@ -26,5 +26,7 @@
   "item.tm.tfc_starfall_sword": "[群峦]星陨剑",
   "tooltip.item.tm.tfc_starfall_sword.0": "挥舞时召唤落星，命中目标会造成额外魔法伤害并使其发光",
   "item.tm.tfc_stone_club": "[群峦]石头做的棒子",
-  "tooltip.item.tm.tfc_stone_club.0": "每次挥舞都会抛射一颗不断翻滚的无重力小圆石，沿途伤害生物"
+  "tooltip.item.tm.tfc_stone_club.0": "每次挥舞都会抛射一颗不断翻滚的无重力小圆石，沿途伤害生物",
+  "item.tm.tfc_radiant_star_sling": "[群峦]辉星投石索",
+  "tooltip.item.tm.tfc_radiant_star_sling.0": "不知道为什么，总之这些星星很适合投掷"
 }

@@ -1,0 +1,29 @@
+{
+  "neoforge:conditions": [
+    {
+      "type": "neoforge:mod_loaded",
+      "modid": "tfc"
+    }
+  ],
+  "type": "minecraft:crafting_shaped",
+  "pattern": [
+    " SI",
+    "S I",
+    "F I"
+  ],
+  "key": {
+    "S": {
+      "item": "minecraft:string"
+    },
+    "F": {
+      "item": "confluence:falling_star"
+    },
+    "I": {
+      "tag": "c:rods/wooden"
+    }
+  },
+  "result": {
+    "count": 1,
+    "id": "tm:tfc_radiant_star_sling"
+  }
+}

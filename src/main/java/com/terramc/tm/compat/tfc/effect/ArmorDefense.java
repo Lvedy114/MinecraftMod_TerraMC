@@ -1,8 +1,8 @@
-package com.terramc.tm.compat.tfc.effects.accessory;
+package com.terramc.tm.compat.tfc.effect;
 
 import com.terramc.tm.TerraMC;
 import com.terramc.tm.accessory.AccessoryEffect;
-import com.terramc.tm.compat.tfc.config.TfcConfig;
+import com.terramc.tm.compat.tfc.TfcHelper;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.ai.attributes.AttributeInstance;
@@ -41,7 +41,7 @@ public class ArmorDefense extends AccessoryEffect {
             toughnessAttr.removeModifier(TOUGHNESS_ID);
             return;
         }
-        int count = TfcConfig.countTfcArmor(entity);
+        int count = TfcHelper.countTfcArmor(entity);
         update(armorAttr, ARMOR_ID, count * armorPerArmor.get(), AttributeModifier.Operation.ADD_VALUE);
         update(toughnessAttr, TOUGHNESS_ID, count * toughnessPerArmor.get(), AttributeModifier.Operation.ADD_VALUE);
     }

@@ -1,7 +1,8 @@
-package com.terramc.tm.compat.tfc.effects.accessory;
+package com.terramc.tm.compat.tfc.effect;
 
 import com.terramc.tm.TerraMC;
 import com.terramc.tm.accessory.AccessoryEffect;
+import com.terramc.tm.accessory.AccessoryItem;
 import com.terramc.tm.config.JsonConfig;
 import net.dries007.tfc.common.component.forge.ForgingBonus;
 import net.dries007.tfc.common.component.forge.ForgingBonusComponent;
@@ -25,7 +26,6 @@ public class Tempered extends AccessoryEffect {
     private static final ResourceLocation TOUGHNESS_ID = TerraMC.id("tfc_tempered_toughness");
     private static final String ACCESSORIES = "tfc/accessories";
     private static final String KEY = "tfc_tempered";
-    private static final String ACCESSORY_SLOT = "accessory";
 
     @Override
     public void onEquip(LivingEntity entity, ItemStack stack) {
@@ -53,12 +53,12 @@ public class Tempered extends AccessoryEffect {
         if (armor > 0) {
             builder.add(Attributes.ARMOR,
                     new AttributeModifier(ARMOR_ID, armor, AttributeModifier.Operation.ADD_VALUE),
-                    ACCESSORY_SLOT);
+                    AccessoryItem.ACCESSORY_SLOT);
         }
         if (toughness > 0) {
             builder.add(Attributes.ARMOR_TOUGHNESS,
                     new AttributeModifier(TOUGHNESS_ID, toughness, AttributeModifier.Operation.ADD_VALUE),
-                    ACCESSORY_SLOT);
+                    AccessoryItem.ACCESSORY_SLOT);
         }
         stack.set(CuriosRegistry.CURIO_ATTRIBUTE_MODIFIERS.get(), builder.build());
     }

@@ -39,3 +39,6 @@ libs
 .DS_Store
 Thumbs.db
 *.log
+
+# ===== 其它工具本地产物 =====
+.zcode

@@ -3,9 +3,7 @@ package com.terramc.tm;
 import com.mojang.logging.LogUtils;
 import com.terramc.tm.accessory.AccessoryEvents;
 import com.terramc.tm.compat.Integrations;
-import com.terramc.tm.compat.tfc.TfcAccessories;
-import com.terramc.tm.compat.tfc.TfcEntities;
-import com.terramc.tm.compat.tfc.TfcWeapon;
+import com.terramc.tm.compat.tfc.TfcCompat;
 import com.terramc.tm.config.JsonConfig;
 import com.terramc.tm.config.TerraConfig;
 import com.terramc.tm.init.ModBlocks;
@@ -27,24 +25,20 @@ public class TerraMC {
     public static final Logger LOGGER = LogUtils.getLogger();
 
     public TerraMC(IEventBus modEventBus, ModContainer modContainer) {
-        // 联动内容：仅当对应联动模组已安装时才注册（见 Integrations）
+        // ===== 联动初始化：每个联动一个统一入口，仅当对应模组已安装时调用 =====
         if (Integrations.isTfc()) {
-            TfcAccessories.init();
-            TfcWeapon.init();
-            TfcEntities.init();
+            TfcCompat.init(modEventBus);
         }
 
+        // ===== 通用框架（无条件初始化）=====
         // Curios 装备校验和饰品效果均发布在 NeoForge 游戏事件总线上
         AccessoryEvents.register();
 
         // JSON 数值配置随数据包重载加载（data/tm/config/**）
         JsonConfig.register();
 
-        // 注册各类 DeferredRegister 到模组事件总线
+        // ===== 注册各类 DeferredRegister 到模组事件总线 =====
         ModItems.ITEMS.register(modEventBus);
-        if (Integrations.isTfc()) {
-            TfcEntities.ENTITIES.register(modEventBus);
-        }
         ModBlocks.BLOCKS.register(modEventBus);
         ModCreativeTabs.TABS.register(modEventBus);
 

@@ -2,6 +2,7 @@ package com.terramc.tm.compat.tfc;
 
 import com.terramc.tm.TerraMC;
 import com.terramc.tm.compat.Integrations;
+import com.terramc.tm.compat.tfc.weapon.entity.RadiantStarProjectile;
 import com.terramc.tm.compat.tfc.weapon.entity.StoneClubProjectile;
 import net.minecraft.core.registries.Registries;
 import net.minecraft.world.entity.EntityType;
@@ -19,6 +20,15 @@ public final class TfcEntities {
                     .of(StoneClubProjectile::new, MobCategory.MISC)
                     .sized(0.28F, 0.28F)
                     .clientTrackingRange(8)
+                    .updateInterval(1)
+                    .build(id.toString()));
+
+    /** 辉星投石索的星弹弹幕（参数对齐汇流法杖弹幕：追踪范围 10，曲线弹道按 tick 同步）。 */
+    public static final DeferredHolder<EntityType<?>, EntityType<RadiantStarProjectile>> RADIANT_STAR_PROJECTILE =
+            ENTITIES.register("radiant_star_projectile", id -> EntityType.Builder
+                    .<RadiantStarProjectile>of(RadiantStarProjectile::new, MobCategory.MISC)
+                    .sized(0.25F, 0.25F)
+                    .clientTrackingRange(10)
                     .updateInterval(1)
                     .build(id.toString()));
 

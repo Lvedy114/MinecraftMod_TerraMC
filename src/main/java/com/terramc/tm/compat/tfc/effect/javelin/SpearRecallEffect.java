@@ -1,7 +1,7 @@
-package com.terramc.tm.compat.tfc.effects.accessory.javelin;
+package com.terramc.tm.compat.tfc.effect.javelin;
 
 import com.terramc.tm.accessory.AccessoryEffect;
-import com.terramc.tm.compat.tfc.config.TfcConfig;
+import com.terramc.tm.compat.tfc.TfcHelper;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.projectile.AbstractArrow;
@@ -73,7 +73,7 @@ public class SpearRecallEffect extends AccessoryEffect {
         List<AbstractArrow> javelins = player.level().getEntitiesOfClass(
                 AbstractArrow.class,
                 player.getBoundingBox().inflate(range),
-                a -> a.getOwner() == player && TfcConfig.isSpear(a) && !a.isRemoved());
+                a -> a.getOwner() == player && TfcHelper.isSpear(a) && !a.isRemoved());
 
         boolean recalled = false;
         for (AbstractArrow javelin : javelins) {

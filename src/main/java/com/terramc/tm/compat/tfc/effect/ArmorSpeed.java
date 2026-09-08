@@ -1,8 +1,8 @@
-package com.terramc.tm.compat.tfc.effects.accessory;
+package com.terramc.tm.compat.tfc.effect;
 
 import com.terramc.tm.TerraMC;
 import com.terramc.tm.accessory.AccessoryEffect;
-import com.terramc.tm.compat.tfc.config.TfcConfig;
+import com.terramc.tm.compat.tfc.TfcHelper;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.ai.attributes.AttributeInstance;
@@ -34,7 +34,7 @@ public class ArmorSpeed extends AccessoryEffect {
             attr.removeModifier(MODIFIER_ID);
             return;
         }
-        double value = TfcConfig.countTfcArmor(entity) * speedPerArmor.get();
+        double value = TfcHelper.countTfcArmor(entity) * speedPerArmor.get();
         AttributeModifier existing = attr.getModifier(MODIFIER_ID);
         if (existing != null && existing.amount() == value) {
             return;

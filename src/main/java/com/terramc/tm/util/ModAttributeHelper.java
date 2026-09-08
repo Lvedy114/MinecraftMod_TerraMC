@@ -1,4 +1,4 @@
-package com.terramc.tm.compat.tfc.Helper;
+package com.terramc.tm.util;
 
 import com.google.common.collect.ArrayListMultimap;
 import com.google.common.collect.Multimap;

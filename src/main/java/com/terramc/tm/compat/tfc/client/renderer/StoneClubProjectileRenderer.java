@@ -40,9 +40,9 @@ public final class StoneClubProjectileRenderer extends EntityRenderer<StoneClubP
                        PoseStack poseStack, MultiBufferSource buffer, int packedLight) {
         poseStack.pushPose();
         poseStack.translate(0F, 0.1F, 0F);
-        Vec3 direction = entity.getInitialDirection();
+        // 与汇流 ForwardProjRenderer 相同：直接用当前速度方向建立局部坐标系
+        Vec3 direction = entity.getDeltaMovement();
         if (direction.lengthSqr() > 1.0E-7D) {
-            // 与汇流 ForwardProjRenderer 相同：先把局部 Z 轴固定到发射方向。
             float yaw = (float) Math.atan2(direction.z, direction.x);
             poseStack.mulPose(Axis.YN.rotation(yaw + Mth.HALF_PI));
 

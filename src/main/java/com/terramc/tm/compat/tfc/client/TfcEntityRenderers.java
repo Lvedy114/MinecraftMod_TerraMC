@@ -2,6 +2,7 @@ package com.terramc.tm.compat.tfc.client;
 
 import com.terramc.tm.TerraMC;
 import com.terramc.tm.compat.Integrations;
+import com.terramc.tm.compat.tfc.client.renderer.RadiantStarProjectileRenderer;
 import com.terramc.tm.compat.tfc.client.renderer.StoneClubProjectileRenderer;
 import com.terramc.tm.compat.tfc.TfcEntities;
 import net.neoforged.api.distmarker.Dist;
@@ -18,6 +19,7 @@ public final class TfcEntityRenderers {
     public static void register(EntityRenderersEvent.RegisterRenderers event) {
         if (Integrations.isTfc()) {
             event.registerEntityRenderer(TfcEntities.STONE_CLUB_PROJECTILE.get(), StoneClubProjectileRenderer::new);
+            event.registerEntityRenderer(TfcEntities.RADIANT_STAR_PROJECTILE.get(), RadiantStarProjectileRenderer::new);
         }
     }
 }

@@ -1,5 +1,6 @@
 package com.terramc.tm.compat.tfc;
 
+import com.terramc.tm.compat.tfc.weapon.magic.RadiantStarSlingItem;
 import com.terramc.tm.compat.tfc.weapon.sword.StoneClubItem;
 import com.terramc.tm.init.ModItems;
 import net.minecraft.world.item.Tier;
@@ -20,6 +21,7 @@ import java.util.function.Supplier;
  * 武器实现直接复用汇流来世的 Base* 体系。
  */
 public final class TfcWeapon {
+
     /** 使用汇流来世已有星怒弹幕组件的剑类样板。 */
     public static final DeferredItem<BaseSwordItem> STARFALL_SWORD = register(
             "tfc_starfall_sword", ModTiers.COPPER, 2, 3.0F, ModRarity.WHITE,
@@ -29,7 +31,12 @@ public final class TfcWeapon {
     /** 使用自定义弹幕实体的 TFC 剑类样板。 */
     public static final DeferredItem<StoneClubItem> STONE_CLUB = ModItems.ITEMS.register(
             "tfc_stone_club",
-            () -> new StoneClubItem(ModTiers.COPPER, ModRarity.WHITE, 2, 3.0F));
+            () -> new StoneClubItem(ModTiers.COPPER, ModRarity.WHITE, 5, 1.6F));
+
+    /** TFC 专属法师武器：辉星投石索（继承汇流 ManaStaffItem，复用射弹速度等法师属性）。 */
+    public static final DeferredItem<RadiantStarSlingItem> RADIANT_STAR_SLING = ModItems.ITEMS.register(
+            "tfc_radiant_star_sling",
+            RadiantStarSlingItem::new);
 
     public static DeferredItem<BaseSwordItem> register(String name, Tier tier, int rawDamage, float rawSpeed,
                                                         BaseSwordItem.ModifierBuilder modifierBuilder) {
